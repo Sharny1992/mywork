@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <%if(isLogin){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/newpost">Create New Post</a>
+          </li>
+          <%}else{ %>
+            <li class="nav-item">
+             <a>~for posting need to login~</a> 
+            </li>
+            <%}%>
+        
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <% if(!isLogin){ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">Registration</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+      <% }else { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">Hello <%= username %></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/loginout">LoginOut</a>
+        </li>
+        <% } %>
+      </ul>
+      
+      <form class="d-flex" action="/search" method="get"  role="search">
+        <input name="q" class="form-control me-2" type="search" id="inp" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" id="search" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+  
+</nav>
