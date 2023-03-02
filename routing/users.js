@@ -4,7 +4,7 @@ const { render } = require('../render')
 const { c } = require('../utils/c')
 const path = require('path'),
   profile = path.join(appRoot, "public", 'profile.ejs');
-const usersR = (users) => {
+const usersR = (user_service,post_service) => {
   return (fastify, _, done) => {
     fastify.get('/profile', async (request, reply) => {
 
@@ -12,26 +12,29 @@ const usersR = (users) => {
         return reply.redirect('/login')
       }
       let id = request.session.userid
-      let user = users.find((i) => { return i.id == id })
-      let myroom = render(profile, request, { user, isme: true })
+      let user =await  user_service.find_by_id(id)
+      let count = await post_service.count_by_user(id)
+      let myroom = render(profile, request, { user,count, isme: true })
+      console.log(JSON.stringify(count))
       return reply.code(200).type('text/html').send(myroom)
     })
     fastify.post('/profile', async (request, reply) => {
       let id = request.session.userid
-      let user = users.find((i) => { return i.id == id })
-      user.information = request.body.information
+      let user = await user_service.find_by_id(id)
+      user.biography = request.body.biography
+      await user_service.update(user,id)
       return reply.code(200).type('application/json').send({})
-
     })
+
     fastify.get('/profile/:userid', async (request, reply) => {
       let id = request.params.userid
-      let user = users.find((i) => { return i.id == id })
+      let user = await user_service.find_by_id(id)
       if (!user) {
         return reply.code(404).type('text/html').send('not profile')
       }
       let isme = id == request.session?.userid
-
-      let usersroom = render(profile, request, { user, isme })
+      count = await post_service.count_by_user(id)
+      let usersroom = render(profile, request, { user,count, isme })
       return reply.code(200).type('text/html').send(usersroom)
     })
     done();

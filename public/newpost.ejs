@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <%- include('./head')%>
+<%- include('./head')%>
+
   <body>
-   
+
     <%- include('./nav') %>
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-8">
-          <div class="mb-3">
-            <label for="title" class="float-start" class="form-label">Title</label>
-            <input type="text" style="width:400px; height:30px"  class="form-control" id="title">
+      <div class="container text-center">
+        <div class="row mt-5">
+          <div class="col-8">
+            <div class="input-group mb-3">
+              <input type="text" id="title" class="form-control" placeholder="Title" aria-label="Username"
+                aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group">
+              <textarea class="form-control" id="content" aria-label="With textarea"></textarea>
+            </div>
+            <div class="input-group mt-3">
+              <button type="button" id="create" class="float-start btn btn-success">Create</button>
+            </div>
           </div>
-          <div class="mb-3">
-            <label for="content"  class="form-label">Content</label>
-            <textarea class="form-control" id="content" rows="3"></textarea>
-          </div>
-          
-          <button type="button" id="create" class="float-start btn btn-success">Create</button>
+          <div class="col-4">col-4</div>
         </div>
-        <div class="col-4">col-4</div>
-        
+
       </div>
-    </div>
-    <script>
-      let create = document.querySelector('#create')
-      let inptitle = document.querySelector('#title')
-      let inpcontent = document.querySelector('#content')
-      create.onclick = function(){
-        axios.post('/news',{
-          titlenews: inptitle.value,
-          content: inpcontent.value
-        })
-        .then((response)=>{
-          window.location.href=window.location.origin+'/posts/'+response.data.id;
-          console.log(response.data)
-        })
-      }
-    </script>
-    
+      <script>
+        let create = document.querySelector('#create')
+        let inptitle = document.querySelector('#title')
+        let inpcontent = document.querySelector('#content')
+        create.onclick = function () {
+          axios.post('/news', {
+            titlenews: inptitle.value,
+            content: inpcontent.value
+          })
+            .then((response) => {
+              window.location.href = window.location.origin + '/posts/' + response.data.id;
+              console.log(response.data)
+            })
+        }
+      </script>
+
   </body>
+
 </html>

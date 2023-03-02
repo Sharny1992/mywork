@@ -5,27 +5,30 @@
    
     <%- include('./nav') %>
     <div class="container text-center">
-      <div class="row">
+      <div class="row mt-5" >
         <div class="col-8">
-          <div class="mb-3">
-            <label for="email" class="float-start" class="form-label">Email: </label>
-            <input type="text" style="width:400px; height:30px"  class="form-control" id="email">
+          <div class="input-group mb-3">
+            <input type="text" id="email" class="form-control" placeholder="Email" aria-label="Username"
+              aria-describedby="basic-addon1">
+            <span class="input-group-text" id="basic-addon1">@</span>
           </div>
-          <div class="mb-3">
-            <label for="username"  class="float-start">UserName: </label>
-            <input type="text" style="width:400px; height:30px"  class="form-control" id="user">
+          <div class="input-group mb-3">
+            <input type="text" id="user" class="form-control" placeholder="UserName" aria-label="Recipient's username"
+              aria-describedby="basic-addon2">
           </div>
-          <div class="mb-3">
-            <label for="pass"   class="float-start">Password: </label>
-            <input type="password" style="width:400px; height:30px"  class="form-control" id="pass">
+          <div class="input-group mb-3">
+            <input type="password" id="pass" class="form-control" placeholder="Password" aria-label="Recipient's username"
+              aria-describedby="basic-addon2">
           </div>
-          
-          <button type="button" id="registration" class="float-start btn btn-success">Registration</button>
+          <div class="input-group mb-3">
+            <button type="button" id="registration" class="float-start btn btn-success">Registration</button>
+          </div>
         </div>
         <div class="col-4">col-4</div>
-        
       </div>
+
     </div>
+   
     <script>
       let inptuser = document.querySelector('#user')
       let create = document.querySelector('#registration')

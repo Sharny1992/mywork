@@ -27,14 +27,18 @@
             <div class="row">
               <div id="liveAlertPlaceholder"></div>
               <%if(!isLogin){ %>
-                <label for="inputPassword5" class="form-label">Email</label>
-                <input type="text" ; id="email">
+                <div class="input-group mb-3">
+                  <input type="text" id="email" class="form-control" placeholder="Email" aria-label="Username"
+                    aria-describedby="basic-addon1">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                </div>
                 <%}%>
-                  <label for="inputPassword5" class="form-label">Comment</label>
-                  <textarea class="form-control" id="comment" rows="3"></textarea>
-                  <div class="col-1">
-                    <button style="float: right" type="button" id="create" class=" btn btn-success">Create</button>
-                  </div>
+                <div class="input-group">
+                  <textarea class="form-control" id="comment" aria-label="With textarea"></textarea>
+                </div>
+                <div class="input-group mt-3">
+                  <button type="button" id="create" class="float-start btn btn-success">Create</button>
+                </div>
                   
             </div>
 

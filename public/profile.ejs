@@ -1,67 +1,103 @@
 <!DOCTYPE html>
 <html>
-  <%- include('./head')%>
+<%- include('./head')%>
+
   <body>
     <%- include('./nav') %>
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-8">
-          <div class="mb-3">
-            <label for="email" class="float-start" class="form-label">Email: <%= user.email%> </label>
-          </div>
-          <div class="mb-3">
-            <label for="username"  class="float-start">UserName:<%=user.username%> </label>
-          </div>
-          <div class="mb-3">
-            <%if(!isme){ %>
-              <div>
-                Information:<%=user.information%>
+
+      <div class="container text-center">
+        <div class="row mt-3 ">
+          <div class="col-8">
+            <div class="row">
+              <div class="col-4">
+                <div>
+                  <img
+                    src="https://ichef.bbci.co.uk/news/800/cpsprodpb/475B/production/_98776281_gettyimages-521697453.jpg"
+                    class="img-thumbnail" alt="...">
+                </div>
+                <div>
+                  <hr class="bg-danger border-2 border-top border-danger">
+                </div>
+                <div>
+                  <p class="text-secondary text-start"> Bootstrap heading</p>
+                  <hr class="bg-danger border-2 border-top border-danger">
+                </div>
+                <div>
+                  <p class="text-secondary text-start "> Bootstrap heading</p>
+                  <hr class="bg-danger border-2 border-top border-danger">
+                </div>
+                <div>
+                  <p class="text-secondary text-start"> Bootstrap heading</p>
+                  <hr class="bg-danger border-2 border-top border-danger">
+                </div>
               </div>
-              <%}else{%>
-            <label for="content"  class="form-label">personal information</label>
-            <textarea  class="form-control" id="information" rows="3"><%=user.information%></textarea>
-            <div class="mb-3">
-              <button  type="button" id="save" class="  float-start btn btn-success">Save</button>
+              <div class="col-8">
+                <div>
+                  <p class="text-start text-primary h4">
+                    <%=user.username%>
+                  </p>
+                </div>
+                <div>
+                  <p class="mt-3 text-start text-info h6">Posts: <%=count%>
+                  </p>
+                </div>
+                <div>
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td> 
+                          <p class="text-start mb-0">Email:</p>
+                        </td>
+                        <td>
+                          <p class="text-start mb-0"><%= user.email%></p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <%if(!isme){ %>
+                            <p class="text-start mb-0">About me:</p>
+                            <%}%>
+                        </td>
+                        <td>
+                          <%if(!isme){ %>
+                            <p class="text-start text-success mb-0"><%=user.biography%></p>
+                          <%}else{%>
+                              <textarea class="form-control" id="information"
+                                aria-label="With textarea"><%=user.biography%></textarea>
+                              <button type="button" id="save" class="mt-2 float-start btn btn-success">Save</button>
+                              <%}%>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-            <%}%>
           </div>
         </div>
-        
-        
       </div>
-    </div>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
+      <%if(isme){%>
+        <script>
+          let save = document.querySelector('#save')
+          let infa = document.querySelector('#information')
 
-          <strong class="me-auto">Notify</strong>
-          <small>11 mins ago</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          information save
-          <a >refresh</a>
-        </div>
-      </div>
-    </div>
-    <script>
-      let save = document.querySelector('#save')
-      let infa = document.querySelector('#information')
-      
-      save.onclick = function(){
-        axios.post('/profile',{
-         information:infa.value
-        })
-        .then((response)=>{
-          let toastlive = document.querySelector('#liveToast')
+          save.onclick = function () {
+            axios.post('/profile', {
+              biography: infa.value
 
-              const toast = new bootstrap.Toast(toastlive)
+            })
+              .then((response) => {
+                let toastlive = document.querySelector('#liveToast')
 
-              toast.show()
-        })
-      }
-    </script>
-    
-    
+                const toast = new bootstrap.Toast(toastlive)
+
+                toast.show()
+              })
+          }
+        </script>
+        <%}%>
+
+
   </body>
+
 </html>
