@@ -23,7 +23,7 @@ let commentsbody = {
     }
   }
 }
-let arr = [{ newsid: 1, email: 2 }, { newsid: 5, email: 6 }, { newsid: 8, email: 9 }]
+
 
 const commentsR = (post_service, comments_service) => {
   return (fastify, _, done) => {

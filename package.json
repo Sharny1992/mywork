@@ -11,6 +11,7 @@
         "fastify-cookie": "^5.7.0",
         "fastify-session": "^5.2.1",
         "knex": "^2.4.2",
+        "luxon": "^3.2.1",
         "sqlite3": "^5.1.4"
     }
 }
