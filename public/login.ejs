@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <%- include('./head')%>
+<%- include('./head')%>
+
   <body>
-   
+
     <%- include('./nav') %>
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-8">
-            <div class="mb-3">
-              <label for="email" class="float-start" class="form-label">Email: </label>
-              <input type="text" style="width:400px; height:30px"  class="form-control" id="email">
+      <div class="container text-center">
+        <div class="row mt-5">
+          <div class="col-8">
+            <div class="input-group mb-3">
+              <input type="text" id="email" class="form-control" placeholder="Email" aria-label="Username"
+                aria-describedby="basic-addon1">
+              <span class="input-group-text" id="basic-addon1">@</span>
             </div>
-          <div class="mb-3">
-            <label for="pass"  class="float-start">Password: </label>
-            <input type="password" style="width:400px; height:30px"  class="form-control" id="pass">
+            <div class="input-group mb-3">
+              <input type="password" id="pass" class="form-control" placeholder="Password"
+                aria-label="Recipient's username" aria-describedby="basic-addon2">
+            </div>
+            <div class="input-group mb-3">
+              <button type="button" id="enter" class="float-start btn btn-success">Enter</button>
+            </div>
           </div>
-          
-          <button type="button" id="enter" class="float-start btn btn-success">Enter</button>
+          <div class="col-4">col-4</div>
         </div>
-        <div class="col-4">col-4</div>
-        
       </div>
-    </div>
-    <script>
-      
-      let create = document.querySelector('#enter')
-      let inptemail = document.querySelector('#email')
-      let inptpass = document.querySelector('#pass')
-      create.onclick = function(){
-        axios.post('/login',{
-          email: inptemail.value,
-          password: inptpass.value
-        })
-        .then((response)=>{
-          window.location.href=window.location.origin;
-          console.log(response.data)
-        })
-      }
-    </script>
-    
+      <script>
+        let create = document.querySelector('#enter')
+        let inptemail = document.querySelector('#email')
+        let inptpass = document.querySelector('#pass')
+        create.onclick = function () {
+          axios.post('/login', {
+            email: inptemail.value,
+            password: inptpass.value
+          })
+            .then((response) => {
+              window.location.href = window.location.origin;
+              console.log(response.data)
+            })
+        }
+      </script>
+
   </body>
+
 </html>

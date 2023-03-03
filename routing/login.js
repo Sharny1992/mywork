@@ -27,7 +27,7 @@ let loginbody = {
 
 
 
-const loginR = (users) => {
+const loginR = (user_service) => {
     return (fastify, _, done) => {
         fastify.get('/login', async (request, reply) => {
             let enter = render(login, request, {})
@@ -52,10 +52,8 @@ const loginR = (users) => {
                 email: request.body.email,
                 password: request.body.password
             }
-            let user = users.find((u) => {
-                return u.email == newuser.email
-                    && u.password == newuser.password
-            })
+            let user = await user_service.find_by_email_pass(newuser.email,newuser.password)
+            
             if (!user) {
                 c(`${newuser.email} not found`)
                 return reply.code(400).type('text/plain').send('error')

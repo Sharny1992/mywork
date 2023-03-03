@@ -25,33 +25,52 @@
               </p>
             </div>
             <div class="row">
+              <div class="col-4 ">
+                <p class="h3 text-start text-secondary ">Comments</p>
+              </div>
+            </div>
+            <% for(let i=0;i < comments.length; i++){%>
+            <div class="row">
+                
+              <div class="col-1 pe-0">
+                <img
+                    src="https://ichef.bbci.co.uk/news/800/cpsprodpb/475B/production/_98776281_gettyimages-521697453.jpg"
+                    class="avatar avatar-32 bg-light rounded-circle text-white p-1" alt="...">
+              </div>
+              <div class="col-auto ps-0">
+                <p class="text-start text-primary h4">
+                  <%= comments[i].email %>
+                </p>
+              </div>
+              <div class="col-auto pe-0">
+                <p class="text-start h5">03/03/2023
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 pe-0">
+              </div>
+              <div class="col-auto ps-0">
+                <p><%= comments[i].comment %></p>
+              </div>
+            </div>
+            <%}%>
+            <div class="row">
               <div id="liveAlertPlaceholder"></div>
               <%if(!isLogin){ %>
-                <label for="inputPassword5" class="form-label">Email</label>
-                <input type="text" ; id="email">
+                <div class="input-group mb-3">
+                  <input type="text" id="email" class="form-control" placeholder="Email" aria-label="Username"
+                    aria-describedby="basic-addon1">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                </div>
                 <%}%>
-                  <label for="inputPassword5" class="form-label">Comment</label>
-                  <textarea class="form-control" id="comment" rows="3"></textarea>
-                  <div class="col-1">
-                    <button style="float: right" type="button" id="create" class=" btn btn-success">Create</button>
-                  </div>
-                  
+                <div class="input-group">
+                  <textarea class="form-control" id="comment" aria-label="With textarea"></textarea>
+                </div>
+                <div class=" mt-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button type="button" id="create" class="float-end btn btn-success">Create</button>
+                </div>
             </div>
-
-            <div class="row">
-              <% for(let i=0;i < comments.length; i++){%>
-                <h6 class="col-1 content-left">
-                  <p>From: <%= comments[i].email %>
-                  </p>
-                </h6>
-
-                <p class="content-justify">
-                  Text:
-                  <%= comments[i].comment %>
-                </p>
-                <%}%>
-            </div>
-            
           </div>
           <div class="col-4">col-4</div>
         </div>

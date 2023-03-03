@@ -1,8 +1,8 @@
 const appRoot = require('app-root-path')['path'];
 const { c } = require('../utils/c')
-const {render} = require('../render')
-const path = require('path'), 
-registration = path.join(appRoot, "public", 'registration.ejs');
+const { render } = require('../render')
+const path = require('path'),
+    registration = path.join(appRoot, "public", 'registration.ejs');
 let signupbody = {
     schema: {
         body: {
@@ -22,10 +22,10 @@ let signupbody = {
         }
     }
 }
-const signupR = (users) => {
+const signupR = (user_service) => {
     return (fastify, _, done) => {
         fastify.get('/signup', async (request, reply) => {
-            let reguser = render(registration,request,{})
+            let reguser = render(registration, request, {})
             return reply.code(200).type('text/html').send(reguser)
         })
         fastify.post('/signup', signupbody, async (request, reply) => {
@@ -34,11 +34,11 @@ const signupR = (users) => {
                 password: request.body.password,
                 username: request.body.username
             }
-            if (users.find((u) => { return u.email == newuser.email })) {
+            if (await user_service.find_by_email(newuser.email)) {
                 c(`${newuser.email} alredy present`)
                 return reply.code(400).type('text/plain').send('error')
             }
-            users.push(newuser)
+            await user_service.insert(newuser)
             return reply.code(200).type('text/plain').send('ok8')
         })
         done()
