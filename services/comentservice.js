@@ -1,12 +1,21 @@
+const { DateTime } = require('luxon')
+
 class CommentService {
   constructor(knex) {
     this.knex = knex
   }
- async filter_by_newsid(id){
-    let news = await this.knex('comment').where({newsid:id})
-    return news
+
+  async filter_by_newsid(id) {
+    let comments = await this.knex('comment').where({ newsid: id })
+   
+    for (let i = 0; i < comments.length; i++) {
+      const myDateTime = DateTime.fromSeconds(comments[i]['date'] / 1000) 
+      const myDateTimeISO = myDateTime.toLocaleString(DateTime.DATETIME_MED);
+      comments[i]['human_date'] = myDateTimeISO 
+    }
+    return comments
   }
- async insert(comments){
+  async insert(comments) {
     await this.knex.insert(comments).into('comment')
   }
   async find_by_id(id) {
@@ -15,12 +24,12 @@ class CommentService {
     }).first()
     return usercomment
   }
-  async update(comment,id){
+  async update(comment, id) {
     await this.knex('comment').where({
       id: id
     }).update(commnet)
   }
-  async delete(id){
+  async delete(id) {
     await this.knex('comment').where({ id: id }).del()
   }
 
