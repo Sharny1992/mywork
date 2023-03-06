@@ -35,8 +35,8 @@ const signupR = (user_service) => {
                 username: request.body.username
             }
             if (await user_service.find_by_email(newuser.email)) {
-                c(`${newuser.email} alredy present`)
-                return reply.code(400).type('text/plain').send('error')
+                c(`${newuser.email}  already present`)
+                return reply.code(400).type('aplication/json').send({ message: 'email already present' })
             }
             await user_service.insert(newuser)
             return reply.code(200).type('text/plain').send('ok8')
