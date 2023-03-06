@@ -14,7 +14,8 @@ const usersR = (user_service,post_service) => {
       let id = request.session.userid
       let user =await  user_service.find_by_id(id)
       let count = await post_service.count_by_user(id)
-      let myroom = render(profile, request, { user,count, isme: true })
+      let posts = await post_service.latest_post(id)
+      let myroom = render(profile, request, { user,count, posts, isme: true })
       console.log(JSON.stringify(count))
       return reply.code(200).type('text/html').send(myroom)
     })
@@ -29,12 +30,14 @@ const usersR = (user_service,post_service) => {
     fastify.get('/profile/:userid', async (request, reply) => {
       let id = request.params.userid
       let user = await user_service.find_by_id(id)
+      
       if (!user) {
         return reply.code(404).type('text/html').send('not profile')
       }
       let isme = id == request.session?.userid
-      count = await post_service.count_by_user(id)
-      let usersroom = render(profile, request, { user,count, isme })
+      let count = await post_service.count_by_user(id)
+      let posts = await post_service.latest_post(id)
+      let usersroom = render(profile, request, { user,count,posts, isme })
       return reply.code(200).type('text/html').send(usersroom)
     })
     done();
