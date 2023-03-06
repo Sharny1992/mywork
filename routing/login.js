@@ -56,7 +56,7 @@ const loginR = (user_service) => {
             
             if (!user) {
                 c(`${newuser.email} not found`)
-                return reply.code(400).type('text/plain').send('error')
+                return reply.code(400).type('application/json').send({ message: 'incorrect email' })
             }
             request.session.userid = user.id
             request.session.useremail = user.email

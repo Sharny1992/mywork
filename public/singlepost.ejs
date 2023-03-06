@@ -94,19 +94,7 @@
         let create = document.querySelector('#create')
         let inpemail = document.querySelector('#email')
         let inpcomment = document.querySelector('#comment')
-        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-
-        const alert = (message, type) => {
-          const wrapper = document.createElement('div')
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            '</div>'
-          ].join('')
-
-          alertPlaceholder.append(wrapper)
-        }
+        let alertPlaceholder = document.querySelector('#liveAlertPlaceholder')
         create.onclick = function () {
           axios.post('/comments', {
             newsid: id.getAttribute('postid'),
@@ -124,7 +112,7 @@
 
             })
             .catch(function (error) {
-              alert(error.response.data.message, 'danger')
+              alert(alertPlaceholder, error.response.data.message, 'danger')
             });
         }
 

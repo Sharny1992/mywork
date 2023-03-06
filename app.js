@@ -22,11 +22,10 @@ const querystring = require('querystring')
 const fs = require('fs'),
   path = require('path'),
   filePath = path.join(__dirname, "public", 'index.ejs'),
-
   newpost = path.join(__dirname, "public", 'newpost.ejs'),
-
   singlepost = path.join(__dirname, "public", 'singlepost.ejs'),
-  css = path.join(__dirname, "public", 'app.css');
+  css = path.join(__dirname, "public", 'app.css'),
+  main = path.join(__dirname, "public", 'main.js');
 const fastify = require('fastify')({
   loging: true,
   querystringParser: str => querystring.parse(str.toLowerCase())
@@ -38,6 +37,11 @@ fastify.get('/app.css', async (request, reply) => {
   let data = fs.readFileSync(css, { encoding: "utf-8" })
   return reply.code(200).type('application/css').send(data)
 })
+fastify.get('/main.js', async (request, reply) => {
+  let data = fs.readFileSync(main, { encoding: "utf-8" })
+  return reply.code(200).type('application/javascript').send(data)
+})
+
 fastify.get('/search', async (request, reply) => {
   let q = request.query.q
   let filter = await  post_service.search(q)//{ return a.titlenews.includes(q) || a.content.includes(q) })

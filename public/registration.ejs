@@ -7,6 +7,7 @@
     <div class="container text-center">
       <div class="row mt-5" >
         <div class="col-8">
+          <div id="liveAlertPlaceholder"></div>
           <div class="input-group mb-3">
             <input type="text" id="email" class="form-control" placeholder="Email" aria-label="Username"
               aria-describedby="basic-addon1">
@@ -26,14 +27,13 @@
         </div>
         <div class="col-4">col-4</div>
       </div>
-
     </div>
-   
     <script>
       let inptuser = document.querySelector('#user')
       let create = document.querySelector('#registration')
       let inptemail = document.querySelector('#email')
       let inptpass = document.querySelector('#pass')
+      let alertPlaceholder = document.querySelector('#liveAlertPlaceholder')
       create.onclick = function(){
         axios.post('/signup',{
           email: inptemail.value,
@@ -44,6 +44,9 @@
           window.location.href=window.location.origin+'/login';
           console.log(response.data)
         })
+        .catch(function (error) {
+              alert(alertPlaceholder, error.response.data.message, 'danger')
+            });
       }
     </script>
     

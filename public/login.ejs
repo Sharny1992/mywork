@@ -8,6 +8,7 @@
       <div class="container text-center">
         <div class="row mt-5">
           <div class="col-8">
+            <div id="liveAlertPlaceholder"></div>
             <div class="input-group mb-3">
               <input type="text" id="email" class="form-control" placeholder="Email" aria-label="Username"
                 aria-describedby="basic-addon1">
@@ -25,6 +26,7 @@
         </div>
       </div>
       <script>
+        let alertPlaceholder = document.querySelector('#liveAlertPlaceholder')
         let create = document.querySelector('#enter')
         let inptemail = document.querySelector('#email')
         let inptpass = document.querySelector('#pass')
@@ -37,6 +39,9 @@
               window.location.href = window.location.origin;
               console.log(response.data)
             })
+            .catch(function (error) {
+              alert(alertPlaceholder, error.response.data.message, 'danger')
+            });
         }
       </script>
 
