@@ -5,15 +5,15 @@
   <body>
 
     <%- include('./nav') %>
-      <div class="container text-center">
+      <div class="container">
         <div class="row mt-5">
           <div class="col-8">
             <div class="input-group mb-3">
               <input type="text" id="title" class="form-control" placeholder="Title" aria-label="Username"
                 aria-describedby="basic-addon1">
             </div>
-            <div class="input-group">
-              <textarea class="form-control" id="content" aria-label="With textarea"></textarea>
+            <div class="">
+              <div id="content"></div>
             </div>
             <div class="input-group mt-3">
               <button type="button" id="create" class="float-start btn btn-success">Create</button>
@@ -21,16 +21,21 @@
           </div>
           <div class="col-4">col-4</div>
         </div>
-
       </div>
+      <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+      <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
       <script>
+        const Editor = toastui.Editor;
+        const editor = new Editor({
+          el: document.querySelector('#content')
+        });
         let create = document.querySelector('#create')
         let inptitle = document.querySelector('#title')
         let inpcontent = document.querySelector('#content')
         create.onclick = function () {
           axios.post('/news', {
             titlenews: inptitle.value,
-            content: inpcontent.value
+            content: editor.getHTML()
           })
             .then((response) => {
               window.location.href = window.location.origin + '/posts/' + response.data.id;
