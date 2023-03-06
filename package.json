@@ -4,6 +4,7 @@
     },
     "dependencies": {
         "@fastify/cookie": "^8.3.0",
+        "@toast-ui/editor": "^3.2.2",
         "app-root-path": "^3.1.0",
         "axios": "^1.2.1",
         "axios-debug-log": "^1.0.0",
