@@ -18,18 +18,12 @@
                 <div>
                   <hr class="bg-danger border-2 border-top border-danger">
                 </div>
-                <div>
-                  <p class="text-secondary text-start"> Bootstrap heading</p>
-                  <hr class="bg-danger border-2 border-top border-danger">
-                </div>
-                <div>
-                  <p class="text-secondary text-start "> Bootstrap heading</p>
-                  <hr class="bg-danger border-2 border-top border-danger">
-                </div>
-                <div>
-                  <p class="text-secondary text-start"> Bootstrap heading</p>
-                  <hr class="bg-danger border-2 border-top border-danger">
-                </div>
+                <%for(let i =0; i < posts.length; i++){%>
+                  <div>
+                    <p class="text-secondary text-start"><a href="/posts/<%= posts[i].id %>"><%=posts[i].titlenews%> </a> </p>
+                    <hr class="bg-danger border-2 border-top border-danger">
+                  </div>
+                <%}%>
               </div>
               <div class="col-8">
                 <div>
