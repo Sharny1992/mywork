@@ -16,11 +16,12 @@ class PostService {
   }
   async find_not_deleted() {
     let userpostfilter = await this.knex.select().table('posts')
-    return userpostfilter
+    return this.add_short_content(userpostfilter)
   }
+
   async insert(post) {
-   let arrpost =  await this.knex.insert(post).into('posts')
-   return arrpost[0]
+    let arrpost = await this.knex.insert(post).into('posts')
+    return arrpost[0]
   }
   async count_by_user(id) {
     let count = await this.knex('posts').where({ userid: id }).count('*')
@@ -29,13 +30,20 @@ class PostService {
   async delete(id) {
     await this.knex('posts').where({ id: id }).del()
   }
+  add_short_content(posts) {
+    for (let i = 0; i < posts.length; i++) {
+      posts[i]['short_content'] = posts[i].content.slice(0, 100)
+    }
+    return posts;
+  }
   async search(q) {
     let filtersearch = await this.knex('posts').whereLike('titlenews', `%${q}%`)
       .orWhereLike('content', `%${q}%`)
-    return filtersearch
+    return this.add_short_content(filtersearch)
+
   }
-  async latest_post(userid){
-    let posts = await this.knex('posts').where({userid: userid}).limit(3)
+  async latest_post(userid) {
+    let posts = await this.knex('posts').where({ userid: userid }).limit(3)
     return posts
   }
 

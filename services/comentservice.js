@@ -4,6 +4,10 @@ class CommentService {
   constructor(knex) {
     this.knex = knex
   }
+  async find_latest() {
+    let comments = await this.knex('comment').orderBy('id','desc').limit(4)
+    return comments
+  }
 
   async filter_by_newsid(id) {
     let comments = await this.knex('comment').where({ newsid: id })
@@ -27,7 +31,7 @@ class CommentService {
   async update(comment, id) {
     await this.knex('comment').where({
       id: id
-    }).update(commnet)
+    }).update(comment)
   }
   async delete(id) {
     await this.knex('comment').where({ id: id }).del()

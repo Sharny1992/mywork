@@ -6,6 +6,7 @@ const knex = require('knex')({
     filename: "./mydb.sqlite"
   }
 });
+const {CurrencyService} = require('./services/currencyservice')
 const {CommentService} = require('./services/comentservice')
 const {PostService} = require('./services/postservice')
 const {UserService} =require('./services/userservice')
@@ -21,7 +22,7 @@ const { commentsR } = require('./routing/comments')
 const querystring = require('querystring')
 const fs = require('fs'),
   path = require('path'),
-  filePath = path.join(__dirname, "public", 'index.ejs'),
+  index = path.join(__dirname, "public", 'index.ejs'),
   newpost = path.join(__dirname, "public", 'newpost.ejs'),
   singlepost = path.join(__dirname, "public", 'singlepost.ejs'),
   css = path.join(__dirname, "public", 'app.css'),
@@ -30,6 +31,7 @@ const fastify = require('fastify')({
   loging: true,
   querystringParser: str => querystring.parse(str.toLowerCase())
 })
+let currency_service = new CurrencyService()
 let user_service = new UserService(knex)
 let post_service = new PostService(knex)
 let comments_service = new CommentService(knex)
@@ -44,8 +46,10 @@ fastify.get('/main.js', async (request, reply) => {
 
 fastify.get('/search', async (request, reply) => {
   let q = request.query.q
+  let rate = await currency_service.get_usd_rates()
+  let comments = await comments_service.find_latest()
   let filter = await  post_service.search(q)//{ return a.titlenews.includes(q) || a.content.includes(q) })
-  let content = render(filePath, request, { posts: filter })
+  let content = render(index, request, { posts: filter, comments,rate })
   return reply.code(200).type('text/html').send(content)
 })
 fastify.get('/posts/:id', async (request, reply) => {
@@ -59,8 +63,12 @@ fastify.get('/posts/:id', async (request, reply) => {
   return reply.code(200).type('text/html').send(content)
 })
 fastify.get('/', async (request, reply) => {
-  return reply.code(200).type('text/html').send(render(filePath, request, 
-    { posts: await  post_service.find_not_deleted(), isLogin: request.session.authenticated }))
+  let rate = await currency_service.get_usd_rates()
+  let comments = await comments_service.find_latest()
+  let posts = await  post_service.find_not_deleted()
+  return reply.code(200).type('text/html').send(render(index, request, 
+    { posts: posts, isLogin: request.session.authenticated,
+    comments,rate}))
 })
 fastify.get('/newpost', async (request, reply) => {
   if (!request.session?.authenticated) {

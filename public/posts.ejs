@@ -3,7 +3,6 @@
     <div class="row">
       <h3 class="col-1 content-left"><a href="posts/<%= posts[i].id %>"><%= posts[i].titlenews %></a></h3>
     </div>
-      
-      <p class="content-justify"><%= posts[i].content %></p>
+      <p class="content-justify"><%- posts[i].short_content %></p>
   </div>
 <%}%>
