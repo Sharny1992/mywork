@@ -10,9 +10,12 @@
         "axios-debug-log": "^1.0.0",
         "ejs": "^3.1.8",
         "fastify-cookie": "^5.7.0",
+        "fastify-file-upload": "^4.0.0",
         "fastify-session": "^5.2.1",
         "knex": "^2.4.2",
         "luxon": "^3.2.1",
-        "sqlite3": "^5.1.4"
+        "mime": "^3.0.0",
+        "sqlite3": "^5.1.4",
+        "uuid": "^9.0.0"
     }
 }

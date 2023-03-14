@@ -11,19 +11,19 @@
             <div class="row">
               <div class="col-4">
                 <div>
-                  <img
-                    src="https://ichef.bbci.co.uk/news/800/cpsprodpb/475B/production/_98776281_gettyimages-521697453.jpg"
-                    class="img-thumbnail" alt="...">
+                  <img src="/public/avatar/<%=user.avatar%>" class="img-thumbnail" alt="...">
                 </div>
                 <div>
                   <hr class="bg-danger border-2 border-top border-danger">
                 </div>
-                <%for(let i =0; i < posts.length; i++){%>
+                <%for(let i=0; i < posts.length; i++){%>
                   <div>
-                    <p class="text-secondary text-start"><a href="/posts/<%= posts[i].id %>"><%=posts[i].titlenews%> </a> </p>
+                    <p class="text-secondary text-start"><a href="/posts/<%= posts[i].id %>">
+                        <%=posts[i].titlenews%>
+                      </a> </p>
                     <hr class="bg-danger border-2 border-top border-danger">
                   </div>
-                <%}%>
+                  <%}%>
               </div>
               <div class="col-8">
                 <div>
@@ -39,11 +39,13 @@
                   <table class="table">
                     <tbody>
                       <tr>
-                        <td> 
+                        <td>
                           <p class="text-start mb-0">Email:</p>
                         </td>
                         <td>
-                          <p class="text-start mb-0"><%= user.email%></p>
+                          <p class="text-start mb-0">
+                            <%= user.email%>
+                          </p>
                         </td>
                       </tr>
                       <tr>
@@ -54,14 +56,29 @@
                         </td>
                         <td>
                           <%if(!isme){ %>
-                            <p class="text-start text-success mb-0"><%=user.biography%></p>
-                          <%}else{%>
+                            <p class="text-start text-success mb-0">
+                              <%=user.biography%>
+                            </p>
+                            <%}else{%>
                               <textarea class="form-control" id="information"
                                 aria-label="With textarea"><%=user.biography%></textarea>
                               <button type="button" id="save" class="mt-2 float-start btn btn-success">Save</button>
                               <%}%>
                         </td>
                       </tr>
+                      <%if(isme){ %>
+                        <tr>
+                          <td>
+                            <p class="text-start mb-0">Avatar:</p>
+                          </td>
+                          <td>
+                            <div class="mb-3">
+                              <input class="form-control" type="file" id="formFile">
+                              <button type="button" id="ava" class="mt-2 float-start btn btn-success">Save</button>
+                            </div>
+                          </td>
+                        </tr>
+                        <%}%>
                     </tbody>
                   </table>
                 </div>
@@ -74,18 +91,20 @@
         <script>
           let save = document.querySelector('#save')
           let infa = document.querySelector('#information')
-
+          let ava = document.querySelector('#ava')
+          let file = document.querySelector('#formFile')
+          ava.onclick = function () {
+            let photo = file.files[0];
+            let formData = new FormData();
+            formData.append("photo", photo);
+            fetch('/upload', { method: "POST", body: formData }).then(response => location.reload());
+          }
           save.onclick = function () {
             axios.post('/profile', {
               biography: infa.value
-
             })
               .then((response) => {
-                let toastlive = document.querySelector('#liveToast')
-
-                const toast = new bootstrap.Toast(toastlive)
-
-                toast.show()
+                location.reload()
               })
           }
         </script>
