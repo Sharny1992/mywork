@@ -6,6 +6,8 @@ const knex = require('knex')({
     filename: "./mydb.sqlite"
   }
 });
+
+const fileUpload = require('fastify-file-upload')
 const {CurrencyService} = require('./services/currencyservice')
 const {CommentService} = require('./services/comentservice')
 const {PostService} = require('./services/postservice')
@@ -42,6 +44,11 @@ fastify.get('/app.css', async (request, reply) => {
 fastify.get('/main.js', async (request, reply) => {
   let data = fs.readFileSync(main, { encoding: "utf-8" })
   return reply.code(200).type('application/javascript').send(data)
+})
+fastify.get('/public/avatar/:picture', async (request, reply) => {
+  let picture = request.params.picture
+  let data = fs.readFileSync(path.join(__dirname,'public','avatar',picture))
+  return reply.code(200).send(data)
 })
 
 fastify.get('/search', async (request, reply) => {
@@ -98,6 +105,7 @@ fastify.register(fastifySession, {
   cookie: { secure: false },
   expires: 1800000
 })
+fastify.register(fileUpload)
 fastify.register(news)
 fastify.register(comments)
 fastify.register(signup)
