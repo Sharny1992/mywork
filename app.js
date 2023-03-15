@@ -109,8 +109,8 @@ fastify.get('/:user/:repo', async (request, reply) => {
 
 let news = newsR(post_service)
 let comments = commentsR(post_service, comments_service)
-let signup = signupR(user_service)
-let login = loginR(user_service)
+let signup = signupR(user_service,comments_service,currency_service)
+let login = loginR(user_service,comments_service,currency_service)
 fastify.register(fastifyCookie)
 fastify.register(fastifySession, {
   cookieName: 'sessionId',
