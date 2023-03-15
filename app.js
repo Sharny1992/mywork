@@ -33,6 +33,7 @@ const fastify = require('fastify')({
   loging: true,
   querystringParser: str => querystring.parse(str.toLowerCase())
 })
+const Limit = 10
 let currency_service = new CurrencyService()
 let user_service = new UserService(knex)
 let post_service = new PostService(knex)
@@ -72,9 +73,21 @@ fastify.get('/posts/:id', async (request, reply) => {
 fastify.get('/', async (request, reply) => {
   let rate = await currency_service.get_usd_rates()
   let comments = await comments_service.find_latest()
-  let posts = await  post_service.find_not_deleted()
+  let posts = await  post_service.find_not_deleted(0,Limit)
+  let count = await post_service. post_count()
   return reply.code(200).type('text/html').send(render(index, request, 
-    { posts: posts, isLogin: request.session.authenticated,
+    { posts: posts,page:1, count,limit:Limit, isLogin: request.session.authenticated,
+    comments,rate}))
+})
+fastify.get('/page/:page',async (request,reply)=>{
+  let page = +request.params.page 
+  let offset = ((page -1) * Limit)   
+  let rate = await currency_service.get_usd_rates()
+  let comments = await comments_service.find_latest()
+  let posts = await  post_service.find_not_deleted(offset,Limit)//1 limit 0-11-21 10*0/1 
+  let count = await post_service. post_count()
+  return reply.code(200).type('text/html').send(render(index, request, 
+    { posts: posts,page, count,limit:Limit, isLogin: request.session.authenticated,
     comments,rate}))
 })
 fastify.get('/newpost', async (request, reply) => {

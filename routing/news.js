@@ -38,7 +38,7 @@ const newsR = (post_service) => {
       return reply.code(200).type('application/json').send(savenews)
     })
     fastify.get('/news', async (request, reply) => {
-      let filter = await post_service.find_not_deleted()  // downloadnews.filter((a) => { return a != null })
+      let filter = await post_service.find_not_deleted(0,10)  // downloadnews.filter((a) => { return a != null })
       return reply.code(200).type('application/json').send(filter)
     })
     fastify.put('/news/:id', newsbody, async (request, reply) => {

@@ -14,9 +14,13 @@ class PostService {
       id: id
     }).update(post)
   }
-  async find_not_deleted() {
-    let userpostfilter = await this.knex.select().table('posts')
+  async find_not_deleted(offset,limit) {
+    let userpostfilter = await this.knex.select().table('posts').offset(offset).limit(limit)
     return this.add_short_content(userpostfilter)
+  }
+  async post_count(){
+    let count = await this.knex('posts').count()
+    return count[0]['count(*)']
   }
 
   async insert(post) {
