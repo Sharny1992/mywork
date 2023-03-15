@@ -43,6 +43,10 @@ const commentsR = (post_service, comments_service) => {
       if (email == null || email == '') {
         return reply.code(400).type('application/json').send({ message: 'email is required' })
       }
+      let comment = request.body.comment
+      if (comment == null || comment == '') {
+        return reply.code(400).type('application/json').send({ message: 'comment is required' })
+      }
       let savecommnet = {
         email: email,
         comment: request.body.comment,
@@ -53,6 +57,8 @@ const commentsR = (post_service, comments_service) => {
       if (!post) {
         return reply.code(404).send()
       }
+      
+
       await comments_service.insert(savecommnet)
       return reply.code(200).type('application/json').send(savecommnet)
     })
