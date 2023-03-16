@@ -67,7 +67,7 @@ fastify.get('/posts/:id', async (request, reply) => {
   if (!post) {
     return reply.code(404).type('text/html').send('not post')
   }
-  let canEdit = post.userid == request.session.userid
+  let canEdit = post.userid == request.session.userid || request.session?.is_admin
   let user = await  user_service.find_by_id(post.userid)   
   let filter = await comments_service.filter_by_newsid(request.params.id)
   let content = await render.render(singlepost, request, { post, user, canEdit, comments:filter })
@@ -107,7 +107,7 @@ fastify.get('/posts/:id/edit', async (request, reply) => {
   if (!post) {
     return reply.code(404).type('text/html').send('not post')
   }
-  let canEdit = post.userid == request.session.userid
+  let canEdit = post.userid == request.session.userid || request.session?.is_admin
   if(!canEdit){
     return reply.code(403).type('text/html').send('can not edit post')
   }

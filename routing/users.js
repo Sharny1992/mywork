@@ -1,13 +1,10 @@
 const appRoot = require('app-root-path')['path'];
-const { request } = require('http');
-const { render } = require('../render')
-const { c } = require('../utils/c')
 const fs = require('fs')
 const { v4: uuidv4 } = require('uuid');
 const mime = require('mime');
 const path = require('path'),
   profile = path.join(appRoot, "public", 'profile.ejs');
-const usersR = (user_service,post_service) => {
+const usersR = (user_service,post_service,render) => {
   return (fastify, _, done) => {
     
     fastify.post('/profile', async (request, reply) => {
@@ -56,7 +53,7 @@ const usersR = (user_service,post_service) => {
 
       let count = await post_service.count_by_user(user.id)
       let posts = await post_service.latest_post(user.id)
-      let myroom = render(profile, request, { user,count, posts, isme })
+      let myroom = await render.render(profile, request, { user,count, posts, isme })
       return myroom
     }
     fastify.get('/profile', async (request, reply) => {
@@ -75,7 +72,7 @@ const usersR = (user_service,post_service) => {
         return reply.code(404).type('text/html').send('not profile')
       }
       let isme = id == request.session?.userid
-      let usersroom = await load_user_room(request,isme,user) //render(profile, request, { user,count,posts, isme })
+      let usersroom = await load_user_room(request,isme,user) 
       return reply.code(200).type('text/html').send(usersroom)
     })
     done();
