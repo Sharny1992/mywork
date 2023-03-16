@@ -1,12 +1,12 @@
 
 
 <p class="h3">latest comments </p>
-<% for(let i =0;i < comments.length; i++){%>
+<% for(let i =0;i < latest_comments.length; i++){%>
   <div class="row">
     <div class="row">
       
-      <span class="col-1 content-left"><a href="posts/<%= comments[i].newsid %>"><%= comments[i].email %></a></span>
+      <span class="col-1 content-left"><a href="posts/<%= latest_comments[i].newsid %>"><%= latest_comments[i].email %></a></span>
     </div>
-      <p class="content-justify"><%- comments[i].comment %></p>
+      <p class="content-justify"><%- latest_comments[i].comment %></p>
   </div>
 <%}%>

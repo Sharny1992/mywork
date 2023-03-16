@@ -1,6 +1,6 @@
 const appRoot = require('app-root-path')['path'];
 const { c } = require('../utils/c')
-const { render } = require('../render')
+
 const path = require('path'),
     registration = path.join(appRoot, "public", 'registration.ejs');
 let signupbody = {
@@ -22,12 +22,12 @@ let signupbody = {
         }
     }
 }
-const signupR = (user_service,comments_service,currency_service) => {
+const signupR = (user_service, render) => {
     return (fastify, _, done) => {
         fastify.get('/signup', async (request, reply) => {
             let rate = await currency_service.get_usd_rates()
             let comments = await comments_service.find_latest()
-            let reguser = render(registration, request, { rate, comments})
+            let reguser = await render.render(registration, request, { rate, comments})
             return reply.code(200).type('text/html').send(reguser)
         })
         fastify.post('/signup', signupbody, async (request, reply) => {
