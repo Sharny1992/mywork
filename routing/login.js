@@ -29,9 +29,7 @@ let loginbody = {
 const loginR = (user_service, render) => {
     return (fastify, _, done) => {
         fastify.get('/login', async (request, reply) => {
-            let rate = await currency_service.get_usd_rates()
-            let comments = await comments_service.find_latest()
-            let enter = await render.render(login, request, {rate, comments})
+            let enter = await render.render(login, request, {})
             return reply.code(200).type('text/html').send(enter)
         })
         fastify.get('/loginout', (request, reply) => {
@@ -59,6 +57,7 @@ const loginR = (user_service, render) => {
                 c(`${newuser.email} not found`)
                 return reply.code(400).type('application/json').send({ message: 'incorrect email' })
             }
+            request.session.is_admin = user.is_admin 
             request.session.userid = user.id
             request.session.useremail = user.email
             request.session.username = user.username

@@ -51,7 +51,7 @@ const newsR = (post_service) => {
       if (! post) {
         return reply.code(404).send()
       }
-       let canEdit = request.session.userid == post.userid
+       let canEdit = request.session.userid == post.userid || request.session?.is_admin
       if(!canEdit){
         return reply.code(403).send()
       }
