@@ -24,6 +24,7 @@ const { commentsR } = require('./routing/comments')
 const querystring = require('querystring')
 const fs = require('fs'),
   path = require('path'),
+  edit = path.join(__dirname, "public", 'edit.ejs'),
   index = path.join(__dirname, "public", 'index.ejs'),
   newpost = path.join(__dirname, "public", 'newpost.ejs'),
   singlepost = path.join(__dirname, "public", 'singlepost.ejs'),
@@ -61,15 +62,17 @@ fastify.get('/search', async (request, reply) => {
   return reply.code(200).type('text/html').send(content)
 })
 fastify.get('/posts/:id', async (request, reply) => {
-  let post = await post_service.find_by_id(request.params.id) //[request.params.id - 1]
+  let post = await post_service.find_by_id(request.params.id) 
   if (!post) {
     return reply.code(404).type('text/html').send('not post')
   }
+  let canEdit = post.userid == request.session.userid
   let user = await  user_service.find_by_id(post.userid)   
   let filter = await comments_service.filter_by_newsid(request.params.id)
-  let content = render(singlepost, request, { post, user, comments: filter })
+  let content = render(singlepost, request, { post, user, canEdit, comments:filter })
   return reply.code(200).type('text/html').send(content)
 })
+
 fastify.get('/', async (request, reply) => {
   let rate = await currency_service.get_usd_rates()
   let comments = await comments_service.find_latest()
@@ -95,6 +98,21 @@ fastify.get('/newpost', async (request, reply) => {
     return reply.redirect('/login')
   }
   let content = render(newpost, request, {})
+  return reply.code(200).type('text/html').send(content)
+})
+fastify.get('/posts/:id/edit', async (request, reply) => {
+  if (!request.session?.authenticated) {
+    return reply.redirect('/login')
+  }
+  let post = await post_service.find_by_id(request.params.id) 
+  if (!post) {
+    return reply.code(404).type('text/html').send('not post')
+  }
+  let canEdit = post.userid == request.session.userid
+  if(!canEdit){
+    return reply.code(403).type('text/html').send('can not edit post')
+  }
+  let content = render(edit, request, {post})
   return reply.code(200).type('text/html').send(content)
 })
 fastify.get('/features/actions', async (request, reply) => {
