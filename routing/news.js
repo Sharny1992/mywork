@@ -47,8 +47,13 @@ const newsR = (post_service) => {
         titlenews: request.body.titlenews,
         content: request.body.content
       }
-      if (! await post_service.find_by_id(request.params.id)) {
+      let post = await post_service.find_by_id(request.params.id)
+      if (! post) {
         return reply.code(404).send()
+      }
+       let canEdit = request.session.userid == post.userid
+      if(!canEdit){
+        return reply.code(403).send()
       }
       await post_service.update(savenews, request.params.id) //downloadnews[request.params.id - 1] = savenews
       return reply.code(200).type('application/json').send(savenews)
