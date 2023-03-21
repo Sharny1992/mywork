@@ -18,6 +18,16 @@ class PostService {
     let userpostfilter = await this.knex.select().table('posts').offset(offset).limit(limit)
     return this.add_short_content(userpostfilter)
   }
+  async search_count(q){
+    let count = await this.knex('posts').whereLike('titlenews',`%${q}%`).orWhereLike('content',`%${q}%`).count()
+    return count[0]['count(*)']
+  }
+  async search(q,offset,limit) {
+
+    let filtersearch = await this.knex('posts').offset(offset).limit(limit).whereLike('titlenews', `%${q}%`)
+      .orWhereLike('content', `%${q}%`)
+    return this.add_short_content(filtersearch)
+  }
   async post_count(){
     let count = await this.knex('posts').count()
     return count[0]['count(*)']
@@ -40,12 +50,7 @@ class PostService {
     }
     return posts;
   }
-  async search(q) {
-    let filtersearch = await this.knex('posts').whereLike('titlenews', `%${q}%`)
-      .orWhereLike('content', `%${q}%`)
-    return this.add_short_content(filtersearch)
-
-  }
+  
   async latest_post(userid) {
     let posts = await this.knex('posts').where({ userid: userid }).limit(3)
     return posts

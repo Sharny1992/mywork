@@ -8,6 +8,7 @@ const knex = require('knex')({
 });
 
 const fileUpload = require('fastify-file-upload')
+const { Pager} = require('./utils/pager')
 const {CurrencyService} = require('./services/currencyservice')
 const {CommentService} = require('./services/comentservice')
 const {PostService} = require('./services/postservice')
@@ -55,11 +56,14 @@ fastify.get('/public/avatar/:picture', async (request, reply) => {
 })
 
 fastify.get('/search', async (request, reply) => {
+  console.log(request.query)
+  let page = +(request.query.page || 1)
   let q = request.query.q
-  let rate = await currency_service.get_usd_rates()
-  let comments = await comments_service.find_latest()
-  let filter = await  post_service.search(q)//{ return a.titlenews.includes(q) || a.content.includes(q) })
-  let content = await render.render(index, request, { posts: filter, comments,rate })
+  let offset = ((page -1) * Limit) 
+  let count = await post_service. search_count(q)
+  let filter = await  post_service.search(q,offset,Limit)
+  let pager = new Pager(page , count, Limit, q)
+  let content = await render.render(index, request, { posts: filter, pager, isLogin: request.session.authenticated })
   return reply.code(200).type('text/html').send(content)
 })
 fastify.get('/posts/:id', async (request, reply) => {
@@ -77,8 +81,9 @@ fastify.get('/posts/:id', async (request, reply) => {
 fastify.get('/', async (request, reply) => {
   let posts = await  post_service.find_not_deleted(0,Limit)
   let count = await post_service. post_count()
+  let pager = new Pager(1, count, Limit)
   let content = await render.render(index, request, 
-    { posts: posts,page:1, count,limit:Limit, isLogin: request.session.authenticated
+    { posts: posts, pager, isLogin: request.session.authenticated
     })
   return reply.code(200).type('text/html').send(content)
 })
@@ -87,8 +92,9 @@ fastify.get('/page/:page',async (request,reply)=>{
   let offset = ((page -1) * Limit)   
   let posts = await  post_service.find_not_deleted(offset,Limit)//1 limit 0-11-21 10*0/1 
   let count = await post_service. post_count()
+  let pager = new Pager(page, count, Limit)
   let content = await render.render(index, request, 
-    { posts: posts,page, count,limit:Limit, isLogin: request.session.authenticated
+    { posts: posts, pager, isLogin: request.session.authenticated
    })
   return reply.code(200).type('text/html').send(content)
 })

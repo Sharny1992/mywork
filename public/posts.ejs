@@ -6,17 +6,17 @@
       <p class="content-justify"><%- posts[i].short_content %></p>
   </div>
 <%}%>
-<% if(count > limit){%> 
+<% if(pager.hasPagination()){%> 
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-      <% if(page != 1){%> 
-      <li class="page-item"><a class="page-link" href="/page/<%= page -1%>">Previous</a></li>
+      <% if(pager.hasPrevios()){%> 
+      <li class="page-item"><a class="page-link" href="<%=pager.previos()%>">Previous</a></li>
       <%}%>
-      <% for(let i = 0; i < Math.ceil(count/limit);i++) {%>   
-      <li class="page-item"><a class="page-link" href="/page/<%=i+1%>"><%= i+ 1%></a></li>
+      <% for(let i = 0, ps = pager.pages(); i < ps.length;i++) {%>   
+      <li class="page-item"><a class="page-link" href="<%=ps[i]['href']%>"><%= ps[i]['text']%></a></li>
       <%}%>
-      <% if(page < Math.ceil(count/limit)){%>
-      <li class="page-item"><a class="page-link" href="/page/<%= page +1%>">Next</a></li>
+      <% if(pager.hasNext()){%>
+      <li class="page-item"><a class="page-link" href="<%= pager.next()%>">Next</a></li>
       <%}%>
     </ul>
   </nav>
