@@ -1,3 +1,13 @@
+const host = location.origin.replace(/^http/, 'ws')
+const ws = new WebSocket(host+'/statusonline')
+ws.onmessage = msg =>{
+  let span  = document.querySelector('#online-count')
+  let json = JSON.parse(msg.data)
+  if(json.type == 'online'){
+    span.innerHTML = json.count
+  }
+  
+} 
 
 
 const alert = (alertPlaceholder, message, type) => {

@@ -21,7 +21,11 @@
             <%}%>
         
       </ul>
+     
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a  class=" nav-link text-success">Online: <span id="online-count"></span> </a>
+        </li>
         <% if(!isLogin){ %>
         <li class="nav-item">
           <a class="nav-link" href="/signup">Registration</a>
