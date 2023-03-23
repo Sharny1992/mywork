@@ -17,12 +17,14 @@ const fastifySession = require('fastify-session')
 const fastifyCookie = require('fastify-cookie')
 const { c } = require('./utils/c')
 const { Render } = require('./render')
+const { websocketR } = require('./routing/websocket')
 const { loginR } = require('./routing/login')
 const { usersR } = require('./routing/users')
 const { signupR } = require('./routing/signup')
 const { newsR } = require('./routing/news')
 const { commentsR } = require('./routing/comments')
-const querystring = require('querystring')
+const querystring = require('querystring');
+const { WebSocketService } = require('./services/websocketservice');
 const fs = require('fs'),
   path = require('path'),
   edit = path.join(__dirname, "public", 'edit.ejs'),
@@ -36,6 +38,7 @@ const fastify = require('fastify')({
   querystringParser: str => querystring.parse(str.toLowerCase())
 })
 const Limit = 10
+let websocket_servise = new WebSocketService(0)
 let currency_service = new CurrencyService()
 let user_service = new UserService(knex)
 let post_service = new PostService(knex)
@@ -146,6 +149,27 @@ fastify.register(news)
 fastify.register(comments)
 fastify.register(signup)
 fastify.register(login)
+fastify.register(require('@fastify/websocket'))
+fastify.register(async function (fastify){
+  websocketR(fastify,websocket_servise)
+
+})
+//fastify.register(async function (fastify) {
+  //fastify.get(
+   // '/statusonline',
+   // { websocket: true },
+   // (connection /* SocketStream */, req /* FastifyRequest */) => {
+    //  connection.socket.on('message', (message) => {
+        // message.toString() === 'hi from client'
+      //  connection.socket.send('hi from server');
+     // });
+    //  connection.socket.on('close', message => {
+      //  connection.socket.send('hi from server')
+      //  console.log('user close')
+     // })
+   // }
+ // );
+//});
 fastify.register(usersR(user_service, post_service, render))
 const start = async () => {
   try {
