@@ -44,6 +44,11 @@ let user_service = new UserService(knex)
 let post_service = new PostService(knex)
 let comments_service = new CommentService(knex)
 let render = new Render(comments_service, currency_service)
+fastify.get('/public/img/:picture', async (request,reply)=>{
+  let picture = request.params.picture
+  let data = fs.readFileSync(path.join(__dirname,'public','img',picture))
+  return reply.code(200).send(data)
+})
 fastify.get('/app.css', async (request, reply) => {
   let data = fs.readFileSync(css, { encoding: "utf-8" })
   return reply.code(200).type('application/css').send(data)

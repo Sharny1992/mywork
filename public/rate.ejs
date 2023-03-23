@@ -2,8 +2,11 @@
 <div class=" mt-0">
   <p class="h4">КУРС ВАЛЮТ </p>
   <%for(let i = 0; i < rate.length; i++){%>
-
-  <p><%= rate[i].Cur_Abbreviation%>:<%= rate[i].Cur_OfficialRate%> </p>
+    <%if(rate[i].Cur_Abbreviation == 'USD'){%> 
+        <p><img src="/public/img/united-states-of-america.png"/> <%= rate[i].Cur_Abbreviation%>:<%= rate[i].Cur_OfficialRate%> </p>
+    <%}else{%>
+        <p><img src="/public/img/euro.png"/> <%= rate[i].Cur_Abbreviation%>:<%= rate[i].Cur_OfficialRate%> </p>
+    <%}%>
   <%}%>
 </div>
 
